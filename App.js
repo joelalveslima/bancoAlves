@@ -1,84 +1,102 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Switch } from "react-native";
+import { StyleSheet, Text, TextInput, View, Switch, Alert, TouchableOpacity } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
 import Slider from "@react-native-community/slider";
 
 export default function App() {
   const [nome, setNome] = useState("");
-  const [idade, setIdade] = useState(0);
+  const [idade, setIdade] = useState("");
   const [status, setStatus] = useState(false);
-  const [value, setValue] = useState(100);
-  const [selectedValue, setSelectedValue] = useState(0);
+  const [limite, setLimite] = useState(100);
+  const [sexoSelecionado, setSexoSelecionado] = useState(0);
   const [sexo, setSexo] = useState([
-    { id: 0, sexo: "" },
+    { id: 0, sexo: "Selecione" },
     { id: 1, sexo: "Outros" },
     { id: 2, sexo: "Masculino" },
     { id: 3, sexo: "Feminino" },
   ]);
 
-  let genero = sexo.map((v, k) => {
-    return <Picker.item key={k} value={k} label={v.sexo} />;
-  });
-
-  function pegarNome(nome) {
-    if (nome === "") {
-      alert("Digite seu nome!");
+  function abrirConta() {
+    if (nome === "" || idade === "" || sexoSelecionado === 0) {
+      Alert.alert("Atenção", "Preencha todos os campos!");
       return;
-      setNome(nome);
     }
+    Alert.alert(
+      "Conta criada!",
+      `Nome: ${nome}\nIdade: ${idade}\nSexo: ${sexo[sexoSelecionado].sexo}\nLimite: R$ ${limite.toFixed(2)}\nEstudante: ${status ? "Sim" : "Não"}`
+    );
   }
+
+  let genero = sexo.map((v, k) => {
+    return <Picker.Item key={k} value={k} label={v.sexo} />;
+  });
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <View>
-          <Text style={styles.text}>BANCO ALVES</Text>
-        </View>
+        <Text style={styles.text}>BANCO SUJEITO</Text>
         <TextInput
           style={styles.input}
-          placeholder="Digite Seu Nome!!:"
-          onChangeText={(nome) => pegarNome(nome)}
+          placeholder="Digite seu nome"
+          value={nome}
+          onChangeText={setNome}
         />
         <TextInput
           style={styles.input}
-          placeholder="Digite sua Idade!!:"
-          onChangeText={(idade) => pegarIdade(idade)}
+          placeholder="Digite sua idade"
+          value={idade}
+          keyboardType="numeric"
+          onChangeText={setIdade}
         />
-
         <Picker
-          selectedValue={selectedValue}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+          style={styles.picker}
+          selectedValue={sexoSelecionado}
+          onValueChange={(itemValue) => setSexoSelecionado(itemValue)}
         >
           {genero}
         </Picker>
+        <Text style={styles.label}>Seu Limite: R$ {limite.toFixed(2)}</Text>
         <Slider
+          style={styles.slider}
           minimumValue={0}
           maximumValue={10000}
-          onValueChange={(x) => setValue(x)}
-          thumbTintColor="green"
+          value={limite}
+          onValueChange={setLimite}
+          thumbTintColor="#27ae60"
+          minimumTrackTintColor="#27ae60"
         />
-        <Text>Seu Salario:{value.toFixed(0)}</Text>
-
-        <Switch
-          value={status}
-          onValueChange={(valorSelecionado) => setStatus(valorSelecionado)}
-          trackColor={{ false: "red", true: "green" }}
-          thumbColor={status ? "green" : "red"}
-        />
-        <Text> Status: {status ? "ATIVO" : "NEGATIVO"}</Text>
+        <View style={styles.switchContainer}>
+          <Text style={styles.label}>Estudante:</Text>
+          <Switch
+            value={status}
+            onValueChange={setStatus}
+            trackColor={{ false: "#d63031", true: "#00b894" }}
+            thumbColor={status ? "#00b894" : "#d63031"}
+          />
+        </View>
+        <TouchableOpacity style={styles.button} onPress={abrirConta}>
+          <Text style={styles.buttonText}>Abrir Conta</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </SafeAreaProvider>
   );
 }
 
-// ...existing code...
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f6fa",
     justifyContent: "center",
     padding: 20,
+  },
+  text: {
+    fontSize: 32,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontStyle: "italic",
+    color: "#2d3436",
+    marginBottom: 25,
   },
   input: {
     height: 50,
@@ -90,14 +108,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     backgroundColor: "#fff",
   },
-  text: {
-    fontSize: 32,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontStyle: "italic",
-    color: "#2d3436",
-    marginBottom: 25,
-  },
   picker: {
     marginTop: 15,
     backgroundColor: "#fff",
@@ -105,21 +115,21 @@ const styles = StyleSheet.create({
     borderColor: "#27ae60",
     borderWidth: 1,
   },
+  label: {
+    fontSize: 18,
+    marginTop: 20,
+    color: "#636e72",
+    fontWeight: "bold",
+  },
   slider: {
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 10,
-  },
-  salario: {
-    fontSize: 18,
-    color: "#0984e3",
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  status: {
-    fontSize: 18,
-    color: "#636e72",
-    marginTop: 10,
-    fontWeight: "bold",
   },
   button: {
     backgroundColor: "#27ae60",
@@ -134,4 +144,3 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-
