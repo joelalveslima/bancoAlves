@@ -35,7 +35,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.text}>BANCO SUJEITO</Text>
+        <Text style={styles.text}>BANCO ALVES</Text>
         <TextInput
           style={styles.input}
           placeholder="Digite seu nome"
