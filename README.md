@@ -22,7 +22,7 @@ Este é um aplicativo simples desenvolvido em **React Native** para simular a ab
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/bancosujeito.git
+   git clone https://github.com/joelalveslima/bancoAlves.git
    ```
 2. Instale as dependências:
    ```bash
