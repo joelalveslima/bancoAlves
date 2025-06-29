@@ -1,4 +1,4 @@
-# Banco Sujeito - App de Abertura de Conta
+# Banco Alves - App de Abertura de Conta
 
 Este é um aplicativo simples desenvolvido em **React Native** para simular a abertura de uma conta bancária. O usuário pode preencher seus dados, escolher o limite desejado, informar se é estudante e selecionar o sexo.
 
